@@ -1,6 +1,9 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@import '~@fortawesome/fontawesome-free/css/all.css';
 
 :root {
   --background: #ffffff;
@@ -17,11 +20,67 @@
 body {
   color: var(--foreground);
   background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'Inter', Arial, Helvetica, sans-serif;
 }
 
 @layer utilities {
   .text-balance {
     text-wrap: balance;
   }
+}
+
+input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  border: 1px solid #9ca3af;
+  position: relative;
+  appearance: none;
+  -webkit-appearance: none;
+  padding: 3px !important;
+  border-radius: 6px;
+  cursor: pointer;
+  overflow: hidden;
+  background: transparent; /* Ensure the background is transparent */
+}
+
+input[type="checkbox"]:checked {
+  border: 1px solid #9ca3af; /* Optional: keep this for checked state */
+}
+
+input[type="checkbox"]::before {
+  content: ""; /* No content by default */
+  display: block;
+  width: 100%; /* Match the width of the checkbox */
+  height: 100%; /* Match the height of the checkbox */
+  border-radius: inherit;
+  position: absolute;
+  background: #0a0a0a;
+  opacity: 0; /* Hidden by default */
+  transition: opacity 0.2s ease; /* Smooth opacity transition */
+}
+
+input[type="checkbox"]:checked::before {
+  opacity: 1; /* Show background when checked */
+}
+
+input[type="checkbox"]:checked::after {
+  content: "\f00c"; /* Font Awesome check icon */
+  font-family: 'Font Awesome 5 Free'; /* Specify the Font Awesome font family */
+  font-weight: 900; /* Ensure you use the right weight for solid icons */
+  color: #ffffff; /* Icon color */
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%); /* Center the icon */
+  transition: opacity 0.2s ease; /* Smooth opacity transition */
+}
+
+input[type="checkbox"]:checked::after {
+  opacity: 1; /* Keep the icon visible when checked */
+}
+
+/* Add this to ensure the icon is hidden when not checked */
+input[type="checkbox"]::after {
+  content: ""; /* No content when unchecked */
+  opacity: 0; /* Hidden by default */
 }

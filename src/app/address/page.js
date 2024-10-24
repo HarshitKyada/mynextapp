@@ -1,10 +1,10 @@
-import HomeSection from "@/component/HomeSection";
+import AllAddress from "@/component/AllAddress";
 import React from "react";
 
 const page = () => {
   return (
-    <div>
-      <HomeSection />
+    <div className="w-full">
+      <AllAddress />
     </div>
   );
 };

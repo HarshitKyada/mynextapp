@@ -1,10 +1,10 @@
-import HomeSection from "@/component/HomeSection";
+import ViewProduct from "@/component/ViewProduct";
 import React from "react";
 
 const page = () => {
   return (
     <div>
-      <HomeSection />
+      <ViewProduct />
     </div>
   );
 };

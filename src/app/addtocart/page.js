@@ -1,10 +1,10 @@
-import HomeSection from "@/component/HomeSection";
+import ViewCart from "@/component/ViewCart";
 import React from "react";
 
 const page = () => {
   return (
     <div>
-      <HomeSection />
+      <ViewCart />
     </div>
   );
 };

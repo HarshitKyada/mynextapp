@@ -1,10 +1,10 @@
-import HomeSection from "@/component/HomeSection";
+import ForgotPassword from "@/component/ForgotPassword";
 import React from "react";
 
 const page = () => {
   return (
     <div>
-      <HomeSection />
+      <ForgotPassword />
     </div>
   );
 };
