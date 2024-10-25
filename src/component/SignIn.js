@@ -37,7 +37,7 @@ const SignIn = () => {
     setErrors({}); // Clear previous errors
 
     try {
-      const response = await axios.post("http://localhost:5000/items/login", {
+      const response = await axios.post(`${process.env.NEXT_PUBLIC_BE_URL}/login`, {
         email: formData?.email,
         password: formData?.password,
       });

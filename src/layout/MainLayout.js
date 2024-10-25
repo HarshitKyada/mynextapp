@@ -29,7 +29,7 @@ const MainLayout = ({ children }) => {
       try {
         const authToken = localStorage.getItem("authToken");
         if (authToken) {
-          await axios.post("http://localhost:5000/items/sync", {
+          await axios.post(`${process.env.NEXT_PUBLIC_BE_URL}/sync`, {
             token: authToken, // Use the token from localStorage
           });
         }

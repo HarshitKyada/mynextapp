@@ -30,7 +30,7 @@ const ViewCart = () => {
 
     try {
       const apiCalled = await axios.post(
-        "http://localhost:5000/items/shopallnow",
+        `${process.env.NEXT_PUBLIC_BE_URL}/shopallnow`,
         apiBody
       );
       if (apiCalled?.data?.success === true) {

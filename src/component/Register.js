@@ -37,7 +37,7 @@ const Register = () => {
     } else {
       setErrors({});
       const isApiCalled = await axios.post(
-        "http://localhost:5000/items/signup",
+        `${process.env.NEXT_PUBLIC_BE_URL}/signup`,
         {
           email: formData?.email,
           username: formData?.username,

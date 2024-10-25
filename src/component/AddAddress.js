@@ -55,13 +55,13 @@ const AddAddress = () => {
           console.log("first", apiBody);
           // Editing an address
           await axios.put(
-            `http://localhost:5000/items/editaddress/${params?.addressId}`,
+            `${process.env.NEXT_PUBLIC_BE_URL}/editaddress/${params?.addressId}`,
             apiBody
           );
         } else {
           // Adding a new address
           await axios.post(
-            "http://localhost:5000/items/addnewaddress",
+            `${process.env.NEXT_PUBLIC_BE_URL}/addnewaddress`,
             apiBody
           );
         }
@@ -84,7 +84,7 @@ const AddAddress = () => {
     const fetchData = async () => {
       try {
         const apiCall = await axios.get(
-          `http://localhost:5000/items/getalladdress/${params?.addressId}`,
+          `${process.env.NEXT_PUBLIC_BE_URL}/getalladdress/${params?.addressId}`,
           {
             headers: {
               token: authToken,

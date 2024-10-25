@@ -24,7 +24,7 @@ const AllAddress = () => {
     dispatch(setSelectAddress(value?._id));
     try {
       const apiCall = await axios.post(
-        "http://localhost:5000/items/selectaddress",
+        `${process.env.NEXT_PUBLIC_BE_URL}/selectaddress`,
         {
           token: authToken,
           id: value?._id,
@@ -42,7 +42,7 @@ const AllAddress = () => {
     const authToken = localStorage.getItem("authToken");
     try {
       const apiCall = await axios.delete(
-        `http://localhost:5000/items/deleteaddress/${value?._id}`,
+        `${process.env.NEXT_PUBLIC_BE_URL}/deleteaddress/${value?._id}`,
         {
           headers: {
             token: authToken,
@@ -64,7 +64,7 @@ const AllAddress = () => {
     const fetchData = async () => {
       try {
         const apiCall = await axios.get(
-          "http://localhost:5000/items/getalladdress",
+          `${process.env.NEXT_PUBLIC_BE_URL}/getalladdress`,
           {
             headers: {
               token: authToken,

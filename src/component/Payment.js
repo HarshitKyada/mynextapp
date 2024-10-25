@@ -18,7 +18,7 @@ const Payment = () => {
     };
     try {
       const apiCalled = await axios.post(
-        "http://localhost:5000/items/successpayment",
+        `${process.env.NEXT_PUBLIC_BE_URL}/successpayment`,
         apiBody
       );
 
@@ -32,7 +32,7 @@ const Payment = () => {
     const apiToken = localStorage.getItem("authToken");
     try {
       const apiCalled = await axios.delete(
-        "http://localhost:5000/items/cancelbill",
+        `${process.env.NEXT_PUBLIC_BE_URL}/cancelbill`,
         {
           headers: {
             token: apiToken,
@@ -50,7 +50,7 @@ const Payment = () => {
     const fetchData = async () => {
       try {
         const apiCall = await axios.get(
-          "http://localhost:5000/items/showingbill",
+          `${process.env.NEXT_PUBLIC_BE_URL}/showingbill`,
           {
             headers: {
               token: localStorage.getItem("authToken"),

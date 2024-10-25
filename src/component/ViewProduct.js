@@ -18,7 +18,7 @@ const ViewProduct = () => {
 
       try {
         const response = await axios.post(
-          `http://localhost:5000/items/viewproduct`,
+          `${process.env.NEXT_PUBLIC_BE_URL}/viewproduct`,
           {
             id: productId,
           }

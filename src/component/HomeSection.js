@@ -12,7 +12,7 @@ const HomeSection = () => {
     const fetchData = async () => {
       try {
         const allData = await axios.get(
-          "http://localhost:5000/items/allproduct"
+          `${process.env.NEXT_PUBLIC_BE_URL}/allproduct`
         );
         if (allData?.data?.products?.length > 0) {
           setAllData(allData.data.products);

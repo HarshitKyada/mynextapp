@@ -39,7 +39,7 @@ const CartCard = () => {
     const authToken = localStorage?.getItem("authToken");
     try {
       const apiCalled = await axios.delete(
-        `http://localhost:5000/items/removefromcart/${id}`,
+        `${process.env.NEXT_PUBLIC_BE_URL}/removefromcart/${id}`,
         {
           headers: {
             token: authToken,
@@ -62,7 +62,7 @@ const CartCard = () => {
     };
     try {
       const apiCall = await axios.post(
-        "http://localhost:5000/items/shopnow",
+        `${process.env.NEXT_PUBLIC_BE_URL}/shopnow`,
         apiBody
       );
       if (apiCall?.data?.success === true) {

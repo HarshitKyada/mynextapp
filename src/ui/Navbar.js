@@ -42,7 +42,7 @@ const Navbar = () => {
       const authToken = localStorage.getItem("authToken") || "";
       try {
         const cartApiCalled = await axios.post(
-          "http://localhost:5000/items/viewcart",
+          `${process.env.NEXT_PUBLIC_BE_URL}/viewcart`,
           { token: authToken }
         );
         const totalItems = cartApiCalled?.data?.cart?.items?.length || 0;

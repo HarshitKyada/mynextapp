@@ -26,7 +26,7 @@ const Card = ({ value }) => {
         token: authToken,
       };
       const apiCalled = await axios.post(
-        "http://localhost:5000/items/addtocart",
+        `${process.env.NEXT_PUBLIC_BE_URL}/addtocart`,
         apiBody
       );
       if (apiCalled?.data?.success) {
