@@ -1,12 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  reactStrictMode: false,
-  swcMinify: true, // Enable SWC minification (optional)
-  compiler: {
-    react: {
-      throwIfNamespace: false, // Disable namespace checking in React
-    },
-  },
+  reactStrictMode: false, // React Strict Mode
+  swcMinify: true, // Enable SWC minification
   images: {
     domains: ['images.unsplash.com'], // Add the allowed external domains here
   },
