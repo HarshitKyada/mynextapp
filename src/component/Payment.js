@@ -1,4 +1,5 @@
 "use client";
+import { setSpinner } from "@/features/auth/authSlice";
 import { setBillData } from "@/features/checkout/checkoutSlice";
 import axios from "axios";
 import { useRouter } from "next/navigation";
@@ -16,6 +17,7 @@ const Payment = () => {
       token: localStorage.getItem("authToken"),
       email: value?.email,
     };
+    dispatch(setSpinner(true));
     try {
       const apiCalled = await axios.post(
         `${process.env.NEXT_PUBLIC_BE_URL}/successpayment`,
@@ -23,13 +25,14 @@ const Payment = () => {
       );
 
       if (apiCalled?.data?.success) {
-        console.log("apiCalled?.data", apiCalled?.data);
         router.push("/");
+        dispatch(setSpinner(false));
       }
     } catch (err) {}
   };
   const handleCancel = async () => {
     const apiToken = localStorage.getItem("authToken");
+    dispatch(setSpinner(true));
     try {
       const apiCalled = await axios.delete(
         `${process.env.NEXT_PUBLIC_BE_URL}/cancelbill`,
@@ -41,13 +44,14 @@ const Payment = () => {
       );
 
       if (apiCalled?.data?.success) {
-        console.log("apiCalled?.data", apiCalled?.data);
         router.push("/");
+        dispatch(setSpinner(false));
       }
     } catch (err) {}
   };
   useEffect(() => {
     const fetchData = async () => {
+      dispatch(setSpinner(true));
       try {
         const apiCall = await axios.get(
           `${process.env.NEXT_PUBLIC_BE_URL}/showingbill`,
@@ -59,6 +63,7 @@ const Payment = () => {
         );
         if (apiCall?.data?.success) {
           dispatch(setBillData(apiCall?.data?.data));
+          dispatch(setSpinner(false));
         }
       } catch (err) {}
     };

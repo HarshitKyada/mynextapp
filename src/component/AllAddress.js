@@ -6,6 +6,7 @@ import {
   setEditAddress,
   setSelectAddress,
 } from "@/features/address/addressSlice";
+import { setSpinner } from "@/features/auth/authSlice";
 import CustomRadio from "@/ui/CustomRadio";
 import axios from "axios";
 import { useRouter } from "next/navigation";
@@ -22,6 +23,7 @@ const AllAddress = () => {
   const handleChange = async (value) => {
     const authToken = localStorage.getItem("authToken");
     dispatch(setSelectAddress(value?._id));
+    dispatch(setSpinner(true))
     try {
       const apiCall = await axios.post(
         `${process.env.NEXT_PUBLIC_BE_URL}/selectaddress`,
@@ -31,15 +33,17 @@ const AllAddress = () => {
         }
       );
       if (apiCall?.data?.success) {
+        dispatch(setSpinner(false))
         router.push("/payment");
       }
     } catch (err) {
-      console.log("err", err);
+      dispatch(setSpinner(false))
     }
   };
 
   const handleDelete = async (value) => {
     const authToken = localStorage.getItem("authToken");
+    dispatch(setSpinner(true))
     try {
       const apiCall = await axios.delete(
         `${process.env.NEXT_PUBLIC_BE_URL}/deleteaddress/${value?._id}`,
@@ -50,9 +54,12 @@ const AllAddress = () => {
         }
       );
       if (apiCall) {
+        dispatch(setSpinner(false))
         dispatch(setApiCall(!getApiCall));
       }
-    } catch (err) {}
+    } catch (err) {
+      dispatch(setSpinner(false))
+    }
   };
 
   const handleEdit = async (value) => {
@@ -62,6 +69,7 @@ const AllAddress = () => {
   useEffect(() => {
     const authToken = localStorage.getItem("authToken");
     const fetchData = async () => {
+      dispatch(setSpinner(false))
       try {
         const apiCall = await axios.get(
           `${process.env.NEXT_PUBLIC_BE_URL}/getalladdress`,
@@ -75,9 +83,11 @@ const AllAddress = () => {
         if (apiCall?.data?.success === true) {
           const allData = apiCall?.data?.addresses || [];
           dispatch(setAddressList(allData));
+          dispatch(setSpinner(false))
         }
       } catch (error) {
         router.push("/login");
+        dispatch(setSpinner(false))
       }
     };
 

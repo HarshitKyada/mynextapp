@@ -6,6 +6,8 @@ import Link from "next/link";
 import { useSnackbar } from "notistack";
 import { useRouter } from "next/navigation";
 import axios from "axios";
+import { setSpinner } from "@/features/auth/authSlice";
+import { useDispatch } from "react-redux";
 
 const SignIn = () => {
   const [formData, setFormData] = useState({
@@ -15,6 +17,7 @@ const SignIn = () => {
   const [errors, setErrors] = useState({});
   const [showPassword, setShowPassword] = useState(false);
   const { enqueueSnackbar } = useSnackbar();
+  const dispatch = useDispatch();
   const route = useRouter();
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -35,7 +38,7 @@ const SignIn = () => {
     }
 
     setErrors({}); // Clear previous errors
-
+    dispatch(setSpinner(true));
     try {
       const response = await axios.post(`${process.env.NEXT_PUBLIC_BE_URL}/login`, {
         email: formData?.email,
@@ -52,6 +55,7 @@ const SignIn = () => {
           autoHideDuration: 1000,
         });
         route.push("/"); // Uncomment if you want to redirect after login
+        dispatch(setSpinner(false));
       }
     } catch (error) {
       // Handle API errors
@@ -61,6 +65,7 @@ const SignIn = () => {
         variant: "error",
         autoHideDuration: 3000,
       });
+      dispatch(setSpinner(false));
     }
   };
 

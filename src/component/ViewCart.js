@@ -1,5 +1,6 @@
 "use client";
 
+import { setSpinner } from "@/features/auth/authSlice";
 import { setCartApiCall } from "@/features/cart/cartSlice";
 import CartCard from "@/ui/CartCard";
 import axios from "axios";
@@ -27,7 +28,7 @@ const ViewCart = () => {
       ],
       token: localStorage.getItem("authToken"),
     };
-
+    dispatch(setSpinner(true));
     try {
       const apiCalled = await axios.post(
         `${process.env.NEXT_PUBLIC_BE_URL}/shopallnow`,
@@ -36,8 +37,11 @@ const ViewCart = () => {
       if (apiCalled?.data?.success === true) {
         dispatch(setCartApiCall(!cartApiCall));
         router.push("/address");
+        dispatch(setSpinner(false));
       }
-    } catch (err) {}
+    } catch (err) {
+      dispatch(setSpinner(false));
+    }
   };
   useEffect(() => {
     if (allCartItems === null) {

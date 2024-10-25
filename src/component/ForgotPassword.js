@@ -25,7 +25,6 @@ const ForgotPassword = () => {
       setErrors(validationErrors);
     } else {
       setErrors({});
-    //   console.log("formData", formData?.email);
     }
   };
 

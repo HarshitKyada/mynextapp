@@ -1,3 +1,4 @@
+import { setSpinner } from "@/features/auth/authSlice";
 import { setAllCartItems, setCartApiCall } from "@/features/cart/cartSlice";
 import axios from "axios";
 import Image from "next/image";
@@ -25,7 +26,6 @@ const CartCard = () => {
       );
 
       if (hasChanges) {
-        console.log("hasChanges", hasChanges);
         setUpdatedCartItems(itemsWithUpdatedCount); // Update local state
         dispatch(setAllCartItems(itemsWithUpdatedCount)); // Update Redux state
       } else {
@@ -37,6 +37,7 @@ const CartCard = () => {
   const removeFromCart = async (value) => {
     const id = value?._id;
     const authToken = localStorage?.getItem("authToken");
+    dispatch(setSpinner(true));
     try {
       const apiCalled = await axios.delete(
         `${process.env.NEXT_PUBLIC_BE_URL}/removefromcart/${id}`,
@@ -48,6 +49,7 @@ const CartCard = () => {
       );
       if (apiCalled) {
         dispatch(setCartApiCall(!cartApiCall));
+        dispatch(setSpinner(false));
       }
     } catch (error) {}
   };
@@ -60,6 +62,7 @@ const CartCard = () => {
       count: value?.count,
       token: localStorage?.getItem("authToken"),
     };
+    dispatch(setSpinner(true));
     try {
       const apiCall = await axios.post(
         `${process.env.NEXT_PUBLIC_BE_URL}/shopnow`,
@@ -68,6 +71,7 @@ const CartCard = () => {
       if (apiCall?.data?.success === true) {
         removeFromCart(value);
         router.push("/address");
+        dispatch(setSpinner(false));
       }
     } catch (err) {}
   };

@@ -6,6 +6,7 @@ import { useSnackbar } from "notistack";
 import axios from "axios";
 import { setCartApiCall } from "@/features/cart/cartSlice";
 import { useDispatch, useSelector } from "react-redux";
+import { setSpinner } from "@/features/auth/authSlice";
 
 const Card = ({ value }) => {
   const router = useRouter();
@@ -14,6 +15,7 @@ const Card = ({ value }) => {
   const storeData = useSelector((state) => state?.cart);
   const { cartApiCall } = storeData;
   const addToCart = async (value) => {
+    dispatch(setSpinner(true));
     try {
       const authToken = localStorage.getItem("authToken");
       const apiBody = {
@@ -35,6 +37,7 @@ const Card = ({ value }) => {
           variant: "success",
           autoHideDuration: 1000,
         });
+        dispatch(setSpinner(false));
       }
     } catch (error) {
       const errorMessage = error?.response?.status;
@@ -45,6 +48,7 @@ const Card = ({ value }) => {
       //   variant: "error",
       //   autoHideDuration: 3000,
       // });
+      dispatch(setSpinner(false));
     }
   };
   const viewProduct = (value) => {

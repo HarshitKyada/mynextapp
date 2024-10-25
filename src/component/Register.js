@@ -6,6 +6,8 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import { useSnackbar } from "notistack";
+import { setSpinner } from "@/features/auth/authSlice";
+import { useDispatch } from "react-redux";
 
 const Register = () => {
   const route = useRouter();
@@ -19,6 +21,7 @@ const Register = () => {
 
   const [errors, setErrors] = useState({});
   const [showPassword, setShowPassword] = useState(false);
+  const dispatch = useDispatch();
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -36,6 +39,7 @@ const Register = () => {
       setErrors(validationErrors);
     } else {
       setErrors({});
+      dispatch(setSpinner(true));
       const isApiCalled = await axios.post(
         `${process.env.NEXT_PUBLIC_BE_URL}/signup`,
         {
@@ -50,6 +54,7 @@ const Register = () => {
           autoHideDuration: 1000,
         });
         route.push("/login");
+        dispatch(setSpinner(false));
       }
     }
   };

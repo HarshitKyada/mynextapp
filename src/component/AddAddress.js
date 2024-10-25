@@ -6,6 +6,7 @@ import axios from "axios";
 import { useDispatch, useSelector } from "react-redux"; // Added useDispatch
 import { useParams, useRouter } from "next/navigation";
 import { setApiCall, setEditAddress } from "@/features/address/addressSlice";
+import { setSpinner } from "@/features/auth/authSlice";
 
 const AddAddress = () => {
   const [formData, setFormData] = useState({
@@ -35,7 +36,6 @@ const AddAddress = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const validationErrors = validateRegistration(formData);
-    console.log("validationErrors", validationErrors);
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
     } else {
@@ -49,10 +49,9 @@ const AddAddress = () => {
         fulladdress: formData?.address,
         token: localStorage.getItem("authToken"),
       };
-      console.log("params?.addressId", params?.addressId);
       try {
         if (params?.addressId) {
-          console.log("first", apiBody);
+          dispatch(setSpinner(true))
           // Editing an address
           await axios.put(
             `${process.env.NEXT_PUBLIC_BE_URL}/editaddress/${params?.addressId}`,
@@ -60,16 +59,19 @@ const AddAddress = () => {
           );
         } else {
           // Adding a new address
+          dispatch(setSpinner(true))
           await axios.post(
             `${process.env.NEXT_PUBLIC_BE_URL}/addnewaddress`,
             apiBody
           );
         }
+        dispatch(setSpinner(false))
         router.push("/addresses"); // Redirect after success
       } catch (err) {
         console.error("Error:", err);
       }
       dispatch(setApiCall(!getApiCall));
+      dispatch(setSpinner(false))
       router.push("/address");
     }
   };
@@ -82,6 +84,7 @@ const AddAddress = () => {
     }
 
     const fetchData = async () => {
+      dispatch(setSpinner(true))
       try {
         const apiCall = await axios.get(
           `${process.env.NEXT_PUBLIC_BE_URL}/getalladdress/${params?.addressId}`,
@@ -95,9 +98,11 @@ const AddAddress = () => {
         if (apiCall?.data?.success === true) {
           const allData = apiCall?.data?.address || {};
           dispatch(setEditAddress(allData));
+          dispatch(setSpinner(false))
         }
       } catch (error) {
         console.error("Error fetching address data:", error);
+        dispatch(setSpinner(false))
       }
     };
 

@@ -22,7 +22,15 @@ module.exports = {
       fontFamily: {
         "inter": ['Inter', 'sans-serif'],
       },
+      backdropBlur: {
+        md: '10px', // Customize this value if needed
+      },
     },
   },
-  plugins: [],
+  variants: {
+    backdropBlur: ['responsive'],
+  },
+  plugins: [
+  
+  ],
 };

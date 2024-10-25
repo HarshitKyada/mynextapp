@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setAllCartItems, setItemInCart } from "@/features/cart/cartSlice";
 import axios from "axios";
 import Link from "next/link";
+import { setSpinner } from "@/features/auth/authSlice";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -40,6 +41,7 @@ const Navbar = () => {
   useEffect(() => {
     const fetchData = async () => {
       const authToken = localStorage.getItem("authToken") || "";
+      dispatch(setSpinner(true));
       try {
         const cartApiCalled = await axios.post(
           `${process.env.NEXT_PUBLIC_BE_URL}/viewcart`,
@@ -49,14 +51,17 @@ const Navbar = () => {
         const items = cartApiCalled?.data?.cart?.items || [];
         dispatch(setItemInCart(totalItems));
         dispatch(setAllCartItems(items));
-      } catch (error) {}
+        dispatch(setSpinner(false));
+      } catch (error) {
+        dispatch(setSpinner(false));
+      }
     };
     fetchData();
   }, [cartApiCall]);
 
   return (
     <>
-      <nav className="bg-gray-900 sticky w-full z-20 top-0 start-0 border-b border-gray-600">
+      <nav className="bg-gray-900 sticky w-full z-10 top-0 start-0 border-b border-gray-600">
         <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
           <a
             href="https://flowbite.com/"

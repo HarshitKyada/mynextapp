@@ -1,23 +1,28 @@
 "use client";
+import { setSpinner } from "@/features/auth/authSlice";
 import Card from "@/ui/Card";
 import axios from "axios";
 import { useSnackbar } from "notistack";
 import React, { useEffect, useState } from "react";
-
+import { useDispatch } from "react-redux";
 
 const HomeSection = () => {
   const { enqueueSnackbar } = useSnackbar();
   const [allData, setAllData] = useState([]);
+  const dispatch = useDispatch();
   useEffect(() => {
     const fetchData = async () => {
+      dispatch(setSpinner(true));
       try {
         const allData = await axios.get(
           `${process.env.NEXT_PUBLIC_BE_URL}/allproduct`
         );
         if (allData?.data?.products?.length > 0) {
           setAllData(allData.data.products);
+          dispatch(setSpinner(false));
         }
       } catch (error) {
+        dispatch(setSpinner(false));
         const errorMessage =
           error.response?.data?.error || "Login failed. Please try again.";
         enqueueSnackbar(errorMessage, {
