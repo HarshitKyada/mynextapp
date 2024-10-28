@@ -15,39 +15,44 @@ const Card = ({ value }) => {
   const storeData = useSelector((state) => state?.cart);
   const { cartApiCall } = storeData;
   const addToCart = async (value) => {
+    const authToken = localStorage.getItem("authToken");
     dispatch(setSpinner(true));
-    try {
-      const authToken = localStorage.getItem("authToken");
-      const apiBody = {
-        id: value?.id,
-        name: value?.name,
-        description: value?.description,
-        price: value?.price,
-        rating: value?.rating,
-        imageUrl: value?.imageUrl,
-        token: authToken,
-      };
-      const apiCalled = await axios.post(
-        `${process.env.NEXT_PUBLIC_BE_URL}/addtocart`,
-        apiBody
-      );
-      if (apiCalled?.data?.success) {
-        dispatch(setCartApiCall(!cartApiCall));
-        enqueueSnackbar("Item added successfully", {
-          variant: "success",
-          autoHideDuration: 1000,
-        });
+    if (authToken) {
+      try {
+        const apiBody = {
+          id: value?.id,
+          name: value?.name,
+          description: value?.description,
+          price: value?.price,
+          rating: value?.rating,
+          imageUrl: value?.imageUrl,
+          token: authToken,
+        };
+        const apiCalled = await axios.post(
+          `${process.env.NEXT_PUBLIC_BE_URL}/addtocart`,
+          apiBody
+        );
+        if (apiCalled?.data?.success) {
+          dispatch(setCartApiCall(!cartApiCall));
+          enqueueSnackbar("Item added successfully", {
+            variant: "success",
+            autoHideDuration: 1000,
+          });
+          dispatch(setSpinner(false));
+        }
+      } catch (error) {
+        const errorMessage = error?.response?.status;
+        if (errorMessage === 401) {
+          // router.push("/login")
+        }
+        // enqueueSnackbar(errorMessage, {
+        //   variant: "error",
+        //   autoHideDuration: 3000,
+        // });
         dispatch(setSpinner(false));
       }
-    } catch (error) {
-      const errorMessage = error?.response?.status;
-      if (errorMessage === 401) {
-        // router.push("/login")
-      }
-      // enqueueSnackbar(errorMessage, {
-      //   variant: "error",
-      //   autoHideDuration: 3000,
-      // });
+    } else {
+      router.push("/login");
       dispatch(setSpinner(false));
     }
   };
