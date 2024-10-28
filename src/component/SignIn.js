@@ -40,12 +40,15 @@ const SignIn = () => {
     setErrors({}); // Clear previous errors
     dispatch(setSpinner(true));
     try {
-      const response = await axios.post(`${process.env.NEXT_PUBLIC_BE_URL}/login`, {
-        email: formData?.email,
-        password: formData?.password,
-      });
+      const response = await axios.post(
+        `${process.env.NEXT_PUBLIC_BE_URL}/login`,
+        {
+          email: formData?.email,
+          password: formData?.password,
+        }
+      );
 
-      if (response.status === 200) {
+      if (response.data?.success) {
         // Check if the API call was successful
         const authToken = response.data?.user?.token;
         localStorage.setItem("userLogin", true);

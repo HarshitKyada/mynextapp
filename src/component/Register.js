@@ -48,12 +48,12 @@ const Register = () => {
           password: formData?.password,
         }
       );
-      if (isApiCalled.status === 200) {
+      if (isApiCalled.data?.success) {
+        route.push("/login");
         enqueueSnackbar("Register successfully", {
           variant: "success",
           autoHideDuration: 1000,
         });
-        route.push("/login");
         dispatch(setSpinner(false));
       }
     }
